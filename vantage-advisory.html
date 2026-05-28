@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vantage Advisory — Conseil Stratégique B2B</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================
+           RESET & CSS CUSTOM PROPERTIES
+        ============================================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            /* — Couleurs — */
+            --white:          #ffffff;
+            --anthracite:     #2d2d2d;
+            --anthracite-lt:  #4a4a4a;
+            --gray-muted:     #6b7280;
+            --gray-light:     #f4f6f9;
+            --gray-border:    #e5e9f0;
+
+            /* — Accent : bleu ardoise — */
+            --accent:         #2454a8;
+            --accent-dark:    #1a3d82;
+            --accent-light:   #eef3fc;
+            --accent-mid:     #4a7fd4;
+
+            /* — Typographie — */
+            --font: 'Plus Jakarta Sans', sans-serif;
+
+            /* — Mise en page — */
+            --max-w:      1160px;
+            --nav-h:      72px;
+
+            /* — Transition — */
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font);
+            color: var(--anthracite);
+            background: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============================================================
+           UTILITAIRES DE MISE EN PAGE
+        ============================================================ */
+        .container {
+            width: 100%;
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Étiquette au-dessus des titres */
+        .section-tag {
+            display: inline-block;
+            font-size: 0.73rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(1.85rem, 4vw, 2.6rem);
+            font-weight: 800;
+            color: var(--anthracite);
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+
+        .section-sub {
+            font-size: 1.05rem;
+            color: var(--gray-muted);
+            line-height: 1.75;
+            max-width: 560px;
+        }
+
+        /* ============================================================
+           BOUTONS
+        ============================================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font);
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 13px 26px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.2s var(--ease),
+                        color 0.2s var(--ease),
+                        border-color 0.2s var(--ease),
+                        transform 0.2s var(--ease),
+                        box-shadow 0.2s var(--ease);
+        }
+
+        /* Plein bleu */
+        .btn-primary {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+        }
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            border-color: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(36, 84, 168, 0.28);
+        }
+
+        /* Contour bleu */
+        .btn-outline {
+            background: transparent;
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        .btn-outline:hover {
+            background: var(--accent);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* Blanc (sur fond sombre) */
+        .btn-white {
+            background: var(--white);
+            color: var(--accent);
+            border-color: var(--white);
+            font-weight: 700;
+        }
+        .btn-white:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ============================================================
+           ANIMATIONS AU DÉFILEMENT — fondu + montée
+           JS ajoute `.visible` via IntersectionObserver
+        ============================================================ */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.65s var(--ease),
+                        transform 0.65s var(--ease);
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Délais d'entrée échelonnés */
+        .d1 { transition-delay: 0.08s; }
+        .d2 { transition-delay: 0.16s; }
+        .d3 { transition-delay: 0.24s; }
+        .d4 { transition-delay: 0.32s; }
+
+        /* ============================================================
+           NAVIGATION
+        ============================================================ */
+        nav {
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 1000;
+            height: var(--nav-h);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        nav.scrolled {
+            border-bottom-color: var(--gray-border);
+            box-shadow: 0 2px 24px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        /* Logo */
+        .nav-logo {
+            font-size: 1.22rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: var(--anthracite);
+            text-decoration: none;
+        }
+        .nav-logo span { color: var(--accent); }
+
+        /* Liens desktop */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--anthracite-lt);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover,
+        .nav-links a.active { color: var(--accent); }
+
+        /* Hamburger — masqué sur desktop */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--anthracite);
+            border-radius: 2px;
+            transition: transform 0.3s var(--ease), opacity 0.3s;
+        }
+        /* Croix animée quand ouvert */
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Menu mobile déroulant */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: var(--nav-h);
+            inset-inline: 0;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-border);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+            padding: 16px 24px 24px;
+            flex-direction: column;
+            gap: 2px;
+            z-index: 999;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--anthracite);
+            text-decoration: none;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-border);
+            transition: color 0.2s;
+        }
+        .mobile-menu a:last-of-type { border-bottom: none; }
+        .mobile-menu a:hover { color: var(--accent); }
+        .mobile-menu .btn {
+            margin-top: 16px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ============================================================
+           HERO
+        ============================================================ */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: var(--nav-h);
+            background: linear-gradient(148deg, var(--white) 58%, var(--accent-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Halo décoratif */
+        #hero::after {
+            content: '';
+            position: absolute;
+            top: -120px;
+            right: -180px;
+            width: 680px;
+            height: 680px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(36, 84, 168, 0.07) 0%, transparent 68%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 740px;
+            padding: 80px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Bandeau accroche */
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+        .hero-eyebrow::before {
+            content: '';
+            width: 32px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .hero-headline {
+            font-size: clamp(2.5rem, 6.5vw, 4rem);
+            font-weight: 800;
+            color: var(--anthracite);
+            line-height: 1.13;
+            letter-spacing: -0.035em;
+            margin-bottom: 22px;
+        }
+        .hero-headline em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .hero-subtitle {
+            font-size: 1.12rem;
+            color: var(--gray-muted);
+            line-height: 1.8;
+            max-width: 540px;
+            margin-bottom: 40px;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        /* Bandeau de réassurance */
+        .hero-trust {
+            margin-top: 64px;
+            padding-top: 40px;
+            border-top: 1px solid var(--gray-border);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 28px;
+        }
+        .trust-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gray-muted);
+        }
+        .trust-stats {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+        .stat strong {
+            font-size: 1.65rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: var(--anthracite);
+            line-height: 1;
+        }
+        .stat small {
+            font-size: 0.78rem;
+            color: var(--gray-muted);
+            margin-top: 2px;
+        }
+
+        /* ============================================================
+           À PROPOS
+        ============================================================ */
+        #about {
+            padding: 108px 0;
+            background: var(--white);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 88px;
+            align-items: center;
+        }
+
+        .about-text .section-sub { margin-bottom: 32px; }
+
+        /* Cartes de valeurs */
+        .values-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .value-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            padding: 22px 24px;
+            border-radius: 12px;
+            border: 1px solid var(--gray-border);
+            background: var(--white);
+            transition: border-color 0.25s,
+                        box-shadow 0.25s,
+                        transform 0.25s var(--ease);
+        }
+        .value-card:hover {
+            border-color: var(--accent-mid);
+            box-shadow: 0 4px 20px rgba(36, 84, 168, 0.09);
+            transform: translateX(5px);
+        }
+
+        /* Icône colorée */
+        .val-icon {
+            flex-shrink: 0;
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .val-icon svg { width: 21px; height: 21px; }
+
+        .val-body h3 {
+            font-size: 0.97rem;
+            font-weight: 700;
+            color: var(--anthracite);
+            margin-bottom: 4px;
+        }
+        .val-body p {
+            font-size: 0.88rem;
+            color: var(--gray-muted);
+            line-height: 1.65;
+        }
+
+        /* ============================================================
+           TARIFS / OFFRES
+        ============================================================ */
+        #offers {
+            padding: 108px 0;
+            background: var(--gray-light);
+        }
+
+        .offers-head {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+        .offers-head .section-sub {
+            margin: 0 auto;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* Carte de base */
+        .price-card {
+            background: var(--white);
+            border-radius: 16px;
+            border: 1.5px solid var(--gray-border);
+            padding: 36px;
+            position: relative;
+            transition: box-shadow 0.3s, transform 0.3s var(--ease);
+        }
+        .price-card:hover {
+            box-shadow: 0 14px 48px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+        }
+
+        /* Carte mise en avant (Pro) */
+        .price-card.featured {
+            border-color: var(--accent);
+            border-width: 2px;
+            transform: translateY(-10px);
+            box-shadow: 0 20px 64px rgba(36, 84, 168, 0.14);
+        }
+        .price-card.featured:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 28px 72px rgba(36, 84, 168, 0.2);
+        }
+
+        /* Badge "Le plus populaire" */
+        .price-badge {
+            position: absolute;
+            top: -13px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: var(--white);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .price-tier {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        .price-amount {
+            font-size: 2.6rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: var(--anthracite);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .price-amount sup {
+            font-size: 1.1rem;
+            font-weight: 700;
+            vertical-align: top;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .price-period {
+            font-size: 0.83rem;
+            color: var(--gray-muted);
+            margin-bottom: 24px;
+        }
+
+        .price-sep {
+            height: 1px;
+            background: var(--gray-border);
+            margin: 22px 0;
+        }
+
+        .price-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            margin-bottom: 32px;
+        }
+        .price-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.88rem;
+            color: var(--anthracite-lt);
+            line-height: 1.45;
+        }
+
+        /* Petite coche ronde */
+        .chk {
+            flex-shrink: 0;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1px;
+        }
+        .chk svg { width: 9px; height: 9px; }
+
+        .price-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ============================================================
+           DEMANDE SUR MESURE
+        ============================================================ */
+        #custom {
+            padding: 108px 0;
+            background: var(--anthracite);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Halo décoratif */
+        #custom::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 480px;
+            height: 480px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(74, 127, 212, 0.14) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .custom-inner {
+            text-align: center;
+            max-width: 620px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .custom-inner .section-tag {
+            background: rgba(74, 127, 212, 0.2);
+            color: var(--accent-mid);
+        }
+        .custom-inner .section-title { color: var(--white); }
+        .custom-inner .section-sub {
+            color: rgba(255, 255, 255, 0.62);
+            max-width: 100%;
+            margin: 0 auto 36px;
+        }
+
+        /* ============================================================
+           FORMULAIRE DE CONTACT
+        ============================================================ */
+        #contact {
+            padding: 108px 0;
+            background: var(--white);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.45fr;
+            gap: 88px;
+            align-items: start;
+        }
+
+        .contact-info .section-sub { margin-bottom: 40px; }
+
+        /* Lignes de coordonnées */
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .c-detail {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 0.9rem;
+            color: var(--anthracite-lt);
+        }
+        .c-icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .c-icon svg { width: 17px; height: 17px; }
+
+        /* Carte formulaire */
+        .form-card {
+            background: var(--gray-light);
+            border: 1px solid var(--gray-border);
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            font-size: 0.83rem;
+            font-weight: 600;
+            color: var(--anthracite);
+        }
+        .form-group input,
+        .form-group textarea {
+            font-family: var(--font);
+            font-size: 0.93rem;
+            color: var(--anthracite);
+            background: var(--white);
+            border: 1.5px solid var(--gray-border);
+            border-radius: 8px;
+            padding: 12px 15px;
+            outline: none;
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(36, 84, 168, 0.09);
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: #b0b8c8; }
+        .form-group textarea {
+            min-height: 126px;
+            resize: vertical;
+        }
+
+        /* État d'erreur */
+        .form-group input.err,
+        .form-group textarea.err {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .form-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 6px;
+        }
+        .form-note {
+            font-size: 0.78rem;
+            color: var(--gray-muted);
+        }
+
+        /* Message de succès remplaçant le formulaire */
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 48px 20px;
+        }
+        .form-success.show { display: block; }
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .success-icon svg { width: 26px; height: 26px; }
+        .form-success h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .form-success p {
+            font-size: 0.9rem;
+            color: var(--gray-muted);
+        }
+
+        /* ============================================================
+           PIED DE PAGE
+        ============================================================ */
+        footer {
+            background: var(--anthracite);
+            color: rgba(255, 255, 255, 0.65);
+            padding: 60px 0 32px;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr;
+            gap: 48px;
+            padding-bottom: 48px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 28px;
+        }
+
+        .footer-logo {
+            color: var(--white);
+            display: inline-block;
+            margin-bottom: 14px;
+            font-size: 1.22rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            text-decoration: none;
+        }
+        .footer-logo span { color: var(--accent-mid); }
+
+        .footer-tagline {
+            font-size: 0.87rem;
+            line-height: 1.65;
+            max-width: 260px;
+        }
+
+        .footer-col-title {
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .footer-links a {
+            font-size: 0.88rem;
+            color: rgba(255, 255, 255, 0.58);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--white); }
+
+        .footer-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.8rem;
+        }
+        .footer-legal {
+            display: flex;
+            gap: 24px;
+        }
+        .footer-legal a {
+            color: rgba(255, 255, 255, 0.45);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-legal a:hover { color: var(--white); }
+
+        /* ============================================================
+           RESPONSIVE — TABLETTE  (≤ 960px)
+        ============================================================ */
+        @media (max-width: 960px) {
+            .about-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 52px;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 420px;
+                margin: 0 auto;
+            }
+            /* Annuler l'élévation "featured" en colonne unique */
+            .price-card.featured { transform: none; }
+            .price-card.featured:hover { transform: translateY(-4px); }
+
+            .footer-top {
+                grid-template-columns: 1fr 1fr;
+                gap: 36px;
+            }
+            .footer-brand { grid-column: 1 / -1; }
+        }
+
+        /* ============================================================
+           RESPONSIVE — MOBILE  (≤ 640px)
+        ============================================================ */
+        @media (max-width: 640px) {
+            :root { --nav-h: 64px; }
+
+            /* Afficher hamburger, masquer nav desktop */
+            .hamburger    { display: flex; }
+            .nav-links,
+            .nav-desktop-cta { display: none; }
+
+            #hero { min-height: calc(100svh - var(--nav-h)); }
+            .hero-content { padding: 56px 0; }
+            .hero-headline { letter-spacing: -0.025em; }
+            .trust-stats { gap: 24px; }
+
+            .form-row { grid-template-columns: 1fr; }
+            .form-card { padding: 24px 20px; }
+
+            .footer-top {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+            .footer-bottom { flex-direction: column; align-items: flex-start; }
+
+            /* Réduire le padding vertical des sections */
+            #about, #offers, #custom, #contact { padding: 76px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====================================================
+         NAVIGATION
+    ==================================================== -->
+    <nav id="navbar">
+        <div class="container nav-inner">
+
+            <a href="#hero" class="nav-logo">Vantage<span>.</span></a>
+
+            <!-- Liens desktop -->
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">À propos</a></li>
+                <li><a href="#offers">Tarifs</a></li>
+                <li><a href="#custom">Sur mesure</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+
+            <a href="#contact" class="btn btn-primary nav-desktop-cta">Nous contacter</a>
+
+            <!-- Hamburger — mobile uniquement -->
+            <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+    </nav>
+
+    <!-- Menu mobile déroulant -->
+    <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Menu mobile">
+        <a href="#about"   class="mob-link">À propos</a>
+        <a href="#offers"  class="mob-link">Tarifs</a>
+        <a href="#custom"  class="mob-link">Sur mesure</a>
+        <a href="#contact" class="mob-link">Contact</a>
+        <a href="#contact" class="btn btn-primary mob-link">Nous contacter</a>
+    </div>
+
+
+    <!-- ====================================================
+         HERO
+    ==================================================== -->
+    <section id="hero">
+        <div class="container">
+            <div class="hero-content">
+
+                <div class="hero-eyebrow fade-up">Conseil Stratégique B2B</div>
+
+                <h1 class="hero-headline fade-up d1">
+                    Libérez votre croissance.<br>
+                    <em>Scalez avec confiance.</em>
+                </h1>
+
+                <p class="hero-subtitle fade-up d2">
+                    Vantage Advisory accompagne les entreprises B2B ambitieuses pour affiner leur stratégie,
+                    optimiser leurs opérations et obtenir des résultats mesurables — à chaque étape de leur développement.
+                </p>
+
+                <div class="hero-actions fade-up d3">
+                    <a href="#offers" class="btn btn-primary">
+                        Découvrir nos offres
+                        <!-- Flèche droite -->
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                    <a href="#about" class="btn btn-outline">En savoir plus</a>
+                </div>
+
+                <!-- Chiffres clés -->
+                <div class="hero-trust fade-up d4">
+                    <span class="trust-label">Ils nous font confiance</span>
+                    <div class="trust-stats">
+                        <div class="stat">
+                            <strong>140+</strong>
+                            <small>Clients dans le monde</small>
+                        </div>
+                        <div class="stat">
+                            <strong>320 M€</strong>
+                            <small>de chiffre d'affaires générés</small>
+                        </div>
+                        <div class="stat">
+                            <strong>12 ans</strong>
+                            <small>d'expertise sectorielle</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ====================================================
+         À PROPOS
+    ==================================================== -->
+    <section id="about">
+        <div class="container">
+            <div class="about-grid">
+
+                <!-- Gauche : présentation -->
+                <div class="about-text">
+                    <span class="section-tag fade-up">Qui sommes-nous</span>
+                    <h2 class="section-title fade-up d1">Stratégie et exécution,<br>toujours ensemble.</h2>
+                    <p class="section-sub fade-up d2">
+                        Fondée en 2012, Vantage Advisory a accompagné plus de 140 entreprises B2B en Europe
+                        et en Amérique du Nord pour naviguer dans des marchés complexes, construire des processus
+                        scalables et devancer la concurrence. Nous ne faisons pas que conseiller — nous retroussons
+                        nos manches et livrons des résultats à vos côtés.
+                    </p>
+                    <a href="#contact" class="btn btn-primary fade-up d3">Démarrer une conversation</a>
+                </div>
+
+                <!-- Droite : 3 valeurs clés -->
+                <div class="values-list">
+
+                    <div class="value-card fade-up d1">
+                        <div class="val-icon">
+                            <!-- Cible — Client d'abord -->
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="6"/>
+                                <circle cx="12" cy="12" r="2"/>
+                            </svg>
+                        </div>
+                        <div class="val-body">
+                            <h3>Le client au centre</h3>
+                            <p>Votre croissance est notre boussole. Chaque recommandation est alignée à vos objectifs spécifiques, votre contexte et vos contraintes — jamais un cadre copié-collé.</p>
+                        </div>
+                    </div>
+
+                    <div class="value-card fade-up d2">
+                        <div class="val-icon">
+                            <!-- Graphique — Données -->
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10"/>
+                                <line x1="12" y1="20" x2="12" y2="4"/>
+                                <line x1="6"  y1="20" x2="6"  y2="14"/>
+                            </svg>
+                        </div>
+                        <div class="val-body">
+                            <h3>Décisions fondées sur les données</h3>
+                            <p>Nous nous appuyons sur des analyses rigoureuses et des métriques réelles, pas sur l'intuition. Nos cadres transforment des données complexes en orientations stratégiques claires.</p>
+                        </div>
+                    </div>
+
+                    <div class="value-card fade-up d3">
+                        <div class="val-icon">
+                            <!-- Éclair — Agilité -->
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                            </svg>
+                        </div>
+                        <div class="val-body">
+                            <h3>Agiles par nature</h3>
+                            <p>Les marchés évoluent vite. Nous travaillons en sprints itératifs, ajustant les stratégies en temps réel pour saisir les opportunités avant vos concurrents.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ====================================================
+         TARIFS / OFFRES
+    ==================================================== -->
+    <section id="offers">
+        <div class="container">
+
+            <div class="offers-head">
+                <span class="section-tag fade-up">Tarifs</span>
+                <h2 class="section-title fade-up d1">Des offres simples et transparentes.</h2>
+                <p class="section-sub fade-up d2">
+                    Choisissez le niveau d'engagement adapté à votre ambition. Tous les plans incluent
+                    un consultant dédié et des bilans trimestriels.
+                </p>
+            </div>
+
+            <div class="pricing-grid">
+
+                <!-- ——— STARTER ——— -->
+                <div class="price-card fade-up d1">
+                    <div class="price-tier">Starter</div>
+                    <div class="price-amount"><sup>€</sup>990</div>
+                    <div class="price-period">par mois · facturé au trimestre</div>
+                    <div class="price-sep"></div>
+                    <ul class="price-features">
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            1 consultant dédié
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Audit de positionnement marché
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Session stratégique mensuelle
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Mise en place d'un tableau de bord KPI
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Support par e-mail (SLA 48 h)
+                        </li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline">Commencer</a>
+                </div>
+
+                <!-- ——— PRO (mis en avant) ——— -->
+                <div class="price-card featured fade-up d2">
+                    <div class="price-badge">Le plus populaire</div>
+                    <div class="price-tier">Pro</div>
+                    <div class="price-amount"><sup>€</sup>2 490</div>
+                    <div class="price-period">par mois · facturé au trimestre</div>
+                    <div class="price-sep"></div>
+                    <ul class="price-features">
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            3 consultants seniors
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Stratégie go-to-market complète
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Ateliers bimensuels
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Feuille de route de croissance des revenus
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Support prioritaire (SLA 4 h)
+                        </li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Commencer</a>
+                </div>
+
+                <!-- ——— PREMIUM ——— -->
+                <div class="price-card fade-up d3">
+                    <div class="price-tier">Premium</div>
+                    <div class="price-amount"><sup>€</sup>4 990</div>
+                    <div class="price-period">par mois · facturé au trimestre</div>
+                    <div class="price-sep"></div>
+                    <ul class="price-features">
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Équipe dédiée de 5 experts
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Transformation bout en bout
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Sessions COMEX hebdomadaires
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Conseil en M&amp;A et scale-up
+                        </li>
+                        <li>
+                            <span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+                            Hotline dédiée 24 h/24, 7 j/7
+                        </li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline">Commencer</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ====================================================
+         DEMANDE SUR MESURE
+         Le CTA renvoie à #contact
+    ==================================================== -->
+    <section id="custom">
+        <div class="container">
+            <div class="custom-inner">
+                <span class="section-tag fade-up">Offre Personnalisée</span>
+                <h2 class="section-title fade-up d1">Besoin d'une solution sur mesure ?</h2>
+                <p class="section-sub fade-up d2">
+                    Chaque entreprise est unique. Si aucune de nos formules standard ne correspond à votre situation —
+                    périmètre de projet spécifique, secteur de niche ou taille d'équipe atypique — nous élaborons
+                    une proposition sur mesure, avec une tarification transparente.
+                </p>
+                <a href="#contact" class="btn btn-white fade-up d3">
+                    Demander un devis personnalisé
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ====================================================
+         FORMULAIRE DE CONTACT
+    ==================================================== -->
+    <section id="contact">
+        <div class="container">
+            <div class="contact-grid">
+
+                <!-- Gauche : informations -->
+                <div class="contact-info">
+                    <span class="section-tag fade-up">Contactez-nous</span>
+                    <h2 class="section-title fade-up d1">Parlons de vos objectifs.</h2>
+                    <p class="section-sub fade-up d2">
+                        Remplissez le formulaire et un membre de notre équipe vous répondra
+                        dans un délai d'un jour ouvré. Sans engagement.
+                    </p>
+
+                    <div class="contact-details fade-up d3">
+
+                        <div class="c-detail">
+                            <div class="c-icon">
+                                <!-- Icône e-mail -->
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </div>
+                            <span>contact@vantageadvisory.fr</span>
+                        </div>
+
+                        <div class="c-detail">
+                            <div class="c-icon">
+                                <!-- Icône téléphone -->
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.42 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.87a16 16 0 0 0 6.06 6.06l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                            </div>
+                            <span>+33 1 23 45 67 89</span>
+                        </div>
+
+                        <div class="c-detail">
+                            <div class="c-icon">
+                                <!-- Icône localisation -->
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <span>12 Rue de Rivoli, Paris 75001, France</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Droite : formulaire -->
+                <div class="fade-up d2">
+                    <div class="form-card">
+
+                        <form id="contactForm" novalidate>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="name">Nom complet *</label>
+                                    <input type="text" id="name" name="name" placeholder="Jean Dupont" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">E-mail professionnel *</label>
+                                    <input type="email" id="email" name="email" placeholder="jean@entreprise.fr" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="company">Nom de l'entreprise *</label>
+                                <input type="text" id="company" name="company" placeholder="Acme SAS" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="message" placeholder="Décrivez votre projet, vos objectifs ou les défis auxquels vous faites face…" required></textarea>
+                            </div>
+
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-primary" id="submitBtn">
+                                    Envoyer le message
+                                    <!-- Icône envoi -->
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="22" y1="2" x2="11" y2="13"/>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                                    </svg>
+                                </button>
+                                <span class="form-note">Réponse sous 1 jour ouvré.</span>
+                            </div>
+                        </form>
+
+                        <!-- État de succès — affiché après envoi valide -->
+                        <div class="form-success" id="formSuccess" role="status" aria-live="polite">
+                            <div class="success-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <h3>Message bien reçu !</h3>
+                            <p>Merci de nous avoir contactés. Un de nos consultants vous répondra dans un délai d'un jour ouvré.</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ====================================================
+         PIED DE PAGE
+    ==================================================== -->
+    <footer>
+        <div class="container">
+
+            <div class="footer-top">
+
+                <!-- Colonne marque -->
+                <div class="footer-brand">
+                    <a href="#hero" class="footer-logo">Vantage<span>.</span></a>
+                    <p class="footer-tagline">
+                        Conseil stratégique B2B pour les entreprises ambitieuses qui souhaitent
+                        croître, scaler et dominer leur marché.
+                    </p>
+                </div>
+
+                <!-- Liens entreprise -->
+                <div>
+                    <div class="footer-col-title">Entreprise</div>
+                    <ul class="footer-links">
+                        <li><a href="#about">À propos</a></li>
+                        <li><a href="#offers">Services</a></li>
+                        <li><a href="#custom">Offres sur mesure</a></li>
+                        <li><a href="#contact">Recrutement</a></li>
+                    </ul>
+                </div>
+
+                <!-- Liens contact -->
+                <div>
+                    <div class="footer-col-title">Contact</div>
+                    <ul class="footer-links">
+                        <li><a href="#contact">Nous contacter</a></li>
+                        <li><a href="mailto:contact@vantageadvisory.fr">contact@vantageadvisory.fr</a></li>
+                        <li><a href="tel:+33123456789">+33 1 23 45 67 89</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <span>© 2026 Vantage Advisory. Tous droits réservés.</span>
+                <div class="footer-legal">
+                    <a href="#">Politique de confidentialité</a>
+                    <a href="#">Conditions d'utilisation</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+
+    <!-- ====================================================
+         JAVASCRIPT
+    ==================================================== -->
+    <script>
+        /* ——————————————————————————————————————————
+           1. NAVBAR — ombre/bordure au défilement
+        —————————————————————————————————————————— */
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 24);
+        }, { passive: true });
+
+
+        /* ——————————————————————————————————————————
+           2. LIEN ACTIF — mis en évidence au défilement
+        —————————————————————————————————————————— */
+        const sections   = document.querySelectorAll('section[id]');
+        const navAnchors = document.querySelectorAll('.nav-links a');
+
+        const activateLink = () => {
+            let current = '';
+            sections.forEach(sec => {
+                if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+            });
+            navAnchors.forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
+            });
+        };
+
+        window.addEventListener('scroll', activateLink, { passive: true });
+
+
+        /* ——————————————————————————————————————————
+           3. MENU MOBILE — toggle hamburger
+        —————————————————————————————————————————— */
+        const hamburger  = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        const closeMenu = () => {
+            mobileMenu.classList.remove('open');
+            hamburger.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        };
+
+        hamburger.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            hamburger.classList.toggle('open', isOpen);
+            hamburger.setAttribute('aria-expanded', String(isOpen));
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+        });
+
+        /* Fermer au clic sur un lien mobile */
+        document.querySelectorAll('.mob-link').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        /* Fermer au clic en dehors */
+        document.addEventListener('click', e => {
+            if (!navbar.contains(e.target) && !mobileMenu.contains(e.target)) {
+                closeMenu();
+            }
+        });
+
+
+        /* ——————————————————————————————————————————
+           4. ANIMATIONS — IntersectionObserver
+           Les éléments .fade-up reçoivent .visible
+           dès qu'ils entrent dans la fenêtre.
+        —————————————————————————————————————————— */
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    io.unobserve(entry.target); /* ne déclencher qu'une fois */
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+
+        document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+
+        /* ——————————————————————————————————————————
+           5. FORMULAIRE — validation côté client
+        —————————————————————————————————————————— */
+        const form        = document.getElementById('contactForm');
+        const formSuccess = document.getElementById('formSuccess');
+        const submitBtn   = document.getElementById('submitBtn');
+
+        const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        const setError = (el, state) => {
+            el.classList.toggle('err', state);
+        };
+
+        /* Retirer le style d'erreur au focus */
+        form.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('focus', () => setError(input, false));
+        });
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+
+            const name    = document.getElementById('name');
+            const email   = document.getElementById('email');
+            const company = document.getElementById('company');
+            const message = document.getElementById('message');
+
+            let valid = true;
+
+            const check = (el, test) => {
+                const ok = test(el.value.trim());
+                setError(el, !ok);
+                if (!ok) valid = false;
+            };
+
+            check(name,    v => v.length > 0);
+            check(email,   v => emailRx.test(v));
+            check(company, v => v.length > 0);
+            check(message, v => v.length > 0);
+
+            if (!valid) return;
+
+            /* Simuler un envoi asynchrone */
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi en cours…';
+
+            setTimeout(() => {
+                form.style.display = 'none';
+                formSuccess.classList.add('show');
+            }, 900);
+        });
+    </script>
+
+</body>
+</html>
